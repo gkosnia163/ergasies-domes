@@ -4,6 +4,10 @@
 Κωνσταντίνος Ιάκωβος Νιάφας
 2022202100140
 dit21140@go.uop.gr
+
+Κωνσταντίνος Γεραμάνης
+2022202200018
+dit22018@go.uop.gr
 */
 
 #include <stdio.h>
@@ -14,7 +18,7 @@ dit21140@go.uop.gr
 #define name_length 50
 #define EAN_maxSize 14
 
-//απλή singley linked λίστα που περιέχει σοτιχεία τύπου inventory
+//απλή singley linked λίστα που περιέχει στοιχεία τύπου inventory
 typedef struct inventory{
     char EAN[EAN_maxSize];
     char name[name_length];
@@ -129,8 +133,8 @@ int checkInsert(inv** head, char EAN[], char name[]){
         i++;
     }
     inv* temp = *head;
-    while(temp != NULL){
-        if(strcmp(name, temp->name) == 0 && strcmp(EAN, temp->EAN) != 0){
+    while(temp != NULL){                      
+        if(strcmp(name, temp->name) == 0 && strcmp(EAN, temp->EAN) != 0){   //έλγχος άμα υπάρχει
             printf("Product : '%s', already exists with EAN: %s\n", name, temp->EAN);
             return -1;
         }
@@ -221,10 +225,10 @@ void newOrder(orderPriority* oP, inv* invHead, costumer* accHead, char id[], cha
 
     inv* temp = invHead;
     while(temp != NULL){
-            if(strcmp(name, temp->name) == 0 || strcmp(name, temp->EAN) == 0){                              //έλεγχος ΕΑΝ εαν εντάχθηκε σωστά (μαζί και με όνομα)
+            if(strcmp(name, temp->name) == 0 || strcmp(name, temp->EAN) == 0){              //έλεγχος ΕΑΝ εαν εντάχθηκε σωστά (μαζί και με όνομα)
                 order* node = newOrderNode(id, buisnessName,temp->EAN,quantity, priority);                  
 
-                if(oP->head == NULL || priority > oP->head->priority){                                      //έλεγχος αν η ουρά είναι άδεια ή υπάρχει μεγαλύτερο priority
+                if(oP->head == NULL || priority > oP->head->priority){                      //έλεγχος αν η ουρά είναι άδεια ή υπάρχει μεγαλύτερο priority
                     node->next = oP->head;             
                     oP->head = node;                     //εισαγωγή νέου node στη λίστα
                 }else{                     
@@ -273,14 +277,14 @@ void print(inv** invHeadPtr, order* orderHead,costumer* accHead, char choice[nam
         }
         printf("--------------------------------------------------------\n");
         return;
-    }else if(strcmp(choice, "accounts") == 0){
+    }else if(strcmp(choice, "accounts") == 0){        //extra τυπώνει και όλους τους λογαριασμούς
         costumer* tempAcc = accHead;
         if(tempAcc == NULL){
             printf("account list is empty\n");
             return;
         }
         printf("accounts:\n--------------------------------------------------------\n");
-        while(tempAcc != NULL){
+        while(tempAcc != NULL){                         
             printf("Account: %s, id: %s, phone: %s, address: %s\n", tempAcc->buisness_name, tempAcc->costumer_id, tempAcc->phone, tempAcc->address);
             tempAcc = tempAcc->next;
         }
@@ -310,9 +314,9 @@ void completeOrders(orderPriority* oP, inv** invHeadPtr){
     }
     printf("executing..\n\n");
     
-    order* currentOrder = oP->head;
+    order* currentOrder = oP->head;         //χρησιμοποιεί την κεφαλή της δομής orderPriority
     order* prevOrder = NULL;
-    char lastCustomerId[8] = "";
+    char lastCustomerId[8] = "";            
     double totalCost = 0;
 
     while(currentOrder != NULL){
@@ -341,7 +345,7 @@ void completeOrders(orderPriority* oP, inv** invHeadPtr){
                 }else{                                                  //μερική κάλυψη 
                     thisCost = tempInv->quantity * tempInv->price;
                     printf("%s -- %d%% of available quantity: %d units -- price: %.2lf\n", tempInv->name, (tempInv->quantity*100)/currentOrder->quantity, tempInv->quantity, thisCost);
-                    currentOrder->quantity -= tempInv->quantity; // Μείωση ποσότητας παραγγελίας
+                    currentOrder->quantity -= tempInv->quantity;        // Μείωση ποσότητας παραγγελίας
                     tempInv->quantity = 0;
                 }
         
