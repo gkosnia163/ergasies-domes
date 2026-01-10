@@ -1,4 +1,4 @@
-//github repo: https://github.com/gkosnia163/ergasia1-domes
+//github repo: https://github.com/gkosnia163/ergasies-domes
 
 /*
 Κωνσταντίνος Ιάκωβος Νιάφας
