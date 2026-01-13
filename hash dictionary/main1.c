@@ -13,7 +13,6 @@ dit21140
                               //να μην μπερδεύονται τα seeds εύκολα καθώς και να κάνουμε insert κι'άλλες λέξεις
 typedef struct {
     char *table[DictionarySize]; //χρήση char* key όπως περιγράφεται στην εκφώνηση
-    int count;
 }hashtable;
 
 //αυτούσιος αλγόριθμος απο την εκφώνηση
@@ -36,7 +35,6 @@ hashtable* createHashTable(){//δημιουργία hashtable με κενά κε
     for(int i = 0; i < DictionarySize;i++){
         ht->table[i] = NULL;
     }
-    ht->count = 0;
 
     return ht;
 }
@@ -89,7 +87,6 @@ void insert(hashtable* ht, char* key){//+linear probing
         exit(1);
     }
     strcpy(ht->table[index], key);
-    ht->count++;
 }
 
 void addTxt(hashtable* ht, char *filename){
@@ -119,11 +116,21 @@ void printWords(hashtable* ht){
     }
 }
 
+void freeEverything(hashtable *ht){
+    hashtable* temp;
+    for(int i = 0; i < DictionarySize; i++){
+        free(ht->table[i]);
+    }
+    free(ht);
+}
+
 int main(){
     printf(" _               _           _ _      _   _\n| |__   __ _ ___| |__     __| (_) ___| |_(_) ___  _ __   __ _ _ __ _   _\n| '_ \\ / _` / __| '_ \\   / _` | |/ __| __| |/ _ \\| '_ \\ / _` | '__| | | |\n| | | | (_| \\__ \\ | | | | (_| | | (__| |_| | (_) | | | | (_| | |  | |_| |\n|_| |_|\\__,_|___/_| |_|  \\__,_|_|\\___|\\__|_|\\___/|_| |_|\\__,_|_|   \\__, |\n\t\t\t\t\t\t\t\t   |___/ \n");
     hashtable* ht = createHashTable();
     addTxt(ht, "dictionary.txt");
     printWords(ht);
     search(ht);
+    freeEverything(ht);
+    printWords(ht);
     return 0;
 }
